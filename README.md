@@ -2,13 +2,8 @@
  + Login. [v]
  + Màn hình Quản lý User, Quản lý Role.[v]
  + Màn hình Xem Nhật ký.p[v]
- + Màn hình Nhập/Sửa Hợp đồng (dành cho Người lập hợp đồng).[v]
+ + Màn h (ình Nhập/Sửa Hợp đồngdành cho Người lập hợp đồng).[v]
  + Màn hình Xem thông tin Bảo hiểm (dành cho Người được bảo hiểm).[v]
-- Viết logic frontend để gọi các API backend từ Task 2 và Task 4.[x]
-- Đảm bảo giao diện nhất quán.[~]
-- Triển khai logic hiển thị dữ liệu và tương tác trên UI cho các phần được phân công.[~]
-
-
 - Các Lỗi hoặc các tính năng chưa hoàn thiện:
  + Chưa lưu và hiển thị thông tin hợp đồng đã chỉnh sửa 
  + Chưa lưu và hiển thị được thông tin hợp đồng mới thêm vào
