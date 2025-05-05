@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <title>Chi tiết sản phẩm</title>
+  <link rel="stylesheet" href="Indexstyle.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css">
+  <style>
+    .product-container {
+      display: flex;
+      padding: 50px;
+      gap: 50px;
+    }
+
+    .product-image {
+      width: 380px;
+      height: 500px;
+      background-color: #f0f0f0;
+      object-fit: cover;
+      border-radius: 10px;
+    }
+
+    .product-info {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 30px;
+      max-width: 600px;
+    }
+
+    .product-info h1 {
+      font-size: 2.5rem;
+    }
+
+    .product-info h5 {
+      color: #aca5a5;
+    }
+
+    .product-info h3 {
+      color: green;
+    }
+
+    .product-info button {
+      width: 150px;
+      padding: 10px;
+      font-weight: bold;
+      background-color: #007bff;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      transition: background-color 0.3s ease;
+    }
+
+    .product-info button:hover {
+      background-color: #0056b3;
+    }
+
+    footer {
+      margin-top: 100px;
+      text-align: center;
+      color: #777;
+    }
+  </style>
+</head>
+<body>
+  <div class="header content p-3">
+    <img src="#" alt="Hình ảnh minh họa" class="featured-product">
+  </div>
+  
+  <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <a class="navbar-brand" href="#">Matcha Latte</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item active">
+          <a class="nav-link" href="#">Trang chủ</a>
+        </li>
+      </ul>
+      <form class="form-inline my-2 my-lg-0">
+        <button class="btn btn-outline-danger my-2 my-sm-0" type="button" onclick="window.location.href='../index.html'">Đăng xuất</button>
+      </form>
+    </div>
+  </nav>
+
+    <div class="content p-3" style="height: 100vh;">
+        <div class="product-container">
+            <img src="https://via.placeholder.com/380x500.png?text=Ảnh+Sản+Phẩm" alt="Ảnh sản phẩm" class="product-image">
+            <div class="product-info">
+            <h1>BH2 - Bảo hiểm lao động</h1>
+            <h5>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.</h5>
+            <h3>Giá: 30.500.000 VND</h3>
+            <button>Mua hàng</button>
+            <script>
+                document.querySelector('.product-info button').onclick = function() {
+                    alert('Cảm ơn bạn đã chọn mua sản phẩm này!');
+                };
+            </script>
+            </div>
+        </div>
+    </div>
+
+  <div class="footer bg-dark text-white text-center p-3" style="clear: both;">
+        <p>&copy; 2025 Insurance Project</p>
+  </div>
+
+</body>
+</html>
