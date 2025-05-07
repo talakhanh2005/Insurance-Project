@@ -9,7 +9,7 @@ window.addEventListener("DOMContentLoaded", () => {
         const row = document.createElement("tr");
         row.innerHTML = `
             <td>${hd.maHD}</td>
-            <td>${hd.loaiHD}</td>
+            <td>${hd["Bảo hiểm nhân thọ"]}</td>
             <td>${hd.nguoiThuHuong}</td>
             <td>${hd.ngayKiKet}</td>
             <td>${hd.ngayKetThuc}</td>

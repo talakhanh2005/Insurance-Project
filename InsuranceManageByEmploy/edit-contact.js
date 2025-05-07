@@ -17,7 +17,7 @@ document.addEventListener("DOMContentLoaded", () => {
   
     // Đổ dữ liệu vào form
     document.getElementById("maHD").value = hopDong.maHD;
-    document.getElementById("loaiHD").value = hopDong.loaiHD;
+    document.getElementById("loaiHD").value = hopDong["Bảo hiểm nhân thọ"];
     document.getElementById("nguoiThuHuong").value = hopDong.nguoiThuHuong;
     document.getElementById("ngayKiKet").value = hopDong.ngayKiKet;
     document.getElementById("ngayKetThuc").value = hopDong.ngayKetThuc;
@@ -26,7 +26,7 @@ document.addEventListener("DOMContentLoaded", () => {
     document.getElementById("editForm").addEventListener("submit", (e) => {
       e.preventDefault();
   
-      Contact[index].loaiHD = document.getElementById("loaiHD").value;
+      Contact[index]["Bảo hiểm nhân thọ"] = document.getElementById("loaiHD").value;
       Contact[index].nguoiThuHuong = document.getElementById("nguoiThuHuong").value;
       Contact[index].ngayKiKet = document.getElementById("ngayKiKet").value;
       Contact[index].ngayKetThuc = document.getElementById("ngayKetThuc").value;
