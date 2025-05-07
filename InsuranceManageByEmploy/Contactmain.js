@@ -1,45 +1,37 @@
-document.addEventListener("DOMContentLoaded", function () {
-    const dsHopDong = JSON.parse(localStorage.getItem("dsHopDong")) || [];
+window.addEventListener("DOMContentLoaded", () => {
+    const tbody = document.querySelector("#contactTable tbody");
 
-    // Hiển thị danh sách hợp đồng
-    const tbody = document.querySelector("#contractTable tbody");
-    if (tbody) {
-        dsHopDong.forEach(h => {
-            const row = document.createElement("tr");
-            row.innerHTML = `
-                <td>${h.maHD}</td>
-                <td>${h.nguoiThuHuong}</td>
-                <td>${h.nhanVien}</td>
-                <td>${h.ngayBatDau}</td>
-                <td>${h.ngayKetThuc}</td>
-                <td>
-                    <button class="btn-edit">Chỉnh sửa</button>
-                </td>
-            `;
-            tbody.appendChild(row);
-        });
-    }
+    // Lấy danh sách hợp đồng từ localStorage nếu có
+    const stored = localStorage.getItem("updatedContactList");
+    const contactList = stored ? JSON.parse(stored) : Contact;
 
-    // Xử lý sự kiện click
-    const table = document.getElementById("contactTable");
-    if (table) {
-        table.addEventListener("click", function (e) {
-            const target = e.target;
+    contactList.forEach(hd => {
+        const row = document.createElement("tr");
+        row.innerHTML = `
+            <td>${hd.maHD}</td>
+            <td>${hd.loaiHD}</td>
+            <td>${hd.nguoiThuHuong}</td>
+            <td>${hd.ngayKiKet}</td>
+            <td>${hd.ngayKetThuc}</td>
+            <td>
+                <button class="btn btn-edit">Sửa</button>
+                <button class="btn btn-delete">Xoá</button>
+            </td>
+        `;
+        tbody.appendChild(row);
+    });
+    localStorage.removeItem("updatedContactList");
+    // Gắn sự kiện sửa
+    const table = document.getElementById('contactTable');
+    table.addEventListener('click', function (e) {
+        const btn = e.target;
+        if (btn.classList.contains('btn-edit')) {
+            const row = btn.closest('tr');
+            const maHD = row.children[0].textContent.trim();
 
-            if (target.classList.contains("btn-delete")) {
-                const row = target.closest("tr");
-                const name = row.cells[1].textContent;
-                if (confirm(`Bạn có chắc muốn xoá hợp đồng "${name}"?`)) {
-                    row.remove();
-                    alert("Đã xoá thành công!");
-                }
-            }
-
-            if (target.classList.contains("btn-edit")) {
-                const row = target.closest("tr");
-                const maHD = row.cells[0].textContent.trim();
-                window.location.href = `edit-contact.html?maHD=${encodeURIComponent(maHD)}`;
-            }
-        });
-    }
+            console.log('Sửa hợp đồng với mã:', maHD);
+            localStorage.setItem('editMaHD', maHD);
+            window.location.href = 'edit-contact.html';
+        }
+    });
 });

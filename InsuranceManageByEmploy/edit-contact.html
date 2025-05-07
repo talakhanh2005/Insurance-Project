@@ -2,68 +2,38 @@
 <html lang="vi">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Chỉnh sửa hợp đồng</title>
+  <title>Sửa hợp đồng</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css">
+  <script src="data-test.js"></script>
+  <script src="edit-contact.js"></script>
 </head>
 <body>
   <div class="container mt-4">
-    <h2 class="mb-4">Thông tin hợp đồng</h2>
-    <form id="contractForm">
+    <h2>Chỉnh sửa hợp đồng</h2>
+    <form id="editForm">
       <div class="form-group">
-        <label>Mã Hợp Đồng</label>
+        <label>Mã hợp đồng</label>
         <input type="text" id="maHD" class="form-control" readonly>
       </div>
       <div class="form-group">
-        <label>Người Thụ Hưởng</label>
-        <input type="text" id="nguoiThuHuong" class="form-control" readonly>
+        <label>Loại hợp đồng</label>
+        <input type="text" id="loaiHD" class="form-control" required>
       </div>
       <div class="form-group">
-        <label>Nhân Viên Lập Hợp Đồng</label>
-        <input type="text" id="nhanVienLap" class="form-control" readonly>
+        <label>Người thụ hưởng</label>
+        <input type="text" id="nguoiThuHuong" class="form-control" required>
       </div>
       <div class="form-group">
-        <label>Ngày Bắt Đầu</label>
-        <input type="date" id="ngayBatDau" class="form-control" required>
+        <label>Ngày ký kết</label>
+        <input type="date" id="ngayKiKet" class="form-control" required>
       </div>
       <div class="form-group">
-        <label>Ngày Kết Thúc</label>
+        <label>Ngày kết thúc</label>
         <input type="date" id="ngayKetThuc" class="form-control" required>
       </div>
-      <button type="submit" class="btn btn-success">Lưu hợp đồng</button>
+      <button href="list-contact.html" class="btn btn-success ml-2">Lưu thay đổi</button>
       <a href="list-contact.html" class="btn btn-secondary ml-2">Hủy</a>
     </form>
   </div>
-
-  <script>
-    document.addEventListener("DOMContentLoaded", function () {
-      // Tạo mã HD mới nếu không có
-      const maHD = "HD" + Date.now();
-      document.getElementById("maHD").value = maHD;
-      document.getElementById("nguoiThuHuong").value = "Nguyễn Văn A";
-      document.getElementById("nhanVienLap").value = "Nhân viên";
-
-      // Lưu dữ liệu khi submit
-      document.getElementById("contractForm").addEventListener("submit", function (e) {
-        e.preventDefault();
-
-        const contract = {
-          maHD: document.getElementById("maHD").value,
-          nguoiThuHuong: document.getElementById("nguoiThuHuong").value,
-          nhanVienLap: document.getElementById("nhanVienLap").value,
-          ngayBatDau: document.getElementById("ngayBatDau").value,
-          ngayKetThuc: document.getElementById("ngayKetThuc").value
-        };
-
-        // Lưu vào localStorage
-        let dsHD = JSON.parse(localStorage.getItem("dsHopDong")) || [];
-        dsHD.push(contract);
-        localStorage.setItem("dsHopDong", JSON.stringify(dsHD));
-
-        alert("Đã lưu hợp đồng!");
-        window.location.href = "list-contact.html";
-      });
-    });
-  </script>
 </body>
 </html>

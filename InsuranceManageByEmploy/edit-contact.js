@@ -1,41 +1,41 @@
-document.addEventListener("DOMContentLoaded", function () {
-    const params = new URLSearchParams(window.location.search);
-    const maHD = params.get("maHD");
-  
-    const dsHopDong = JSON.parse(localStorage.getItem("dsHopDong")) || [];
-    const hopDong = dsHopDong.find(h => h.maHD.trim() === maHD?.trim());
-  
-    if (!hopDong) {
-      alert("Không tìm thấy hợp đồng để chỉnh sửa!");
+document.addEventListener("DOMContentLoaded", () => {
+    const maHD = localStorage.getItem("editMaHD");
+    if (!maHD) {
+      alert("Không tìm thấy mã hợp đồng cần sửa");
+      window.location.href = "list-contact.html";
       return;
     }
   
+    // Tìm hợp đồng từ mảng Contact
+    const index = Contact.findIndex(c => c.maHD === maHD);
+    if (index === -1) {
+      alert("Không tìm thấy hợp đồng tương ứng");
+      return;
+    }
+    console.log(index)
+    const hopDong = Contact[index];
+  
+    // Đổ dữ liệu vào form
     document.getElementById("maHD").value = hopDong.maHD;
+    document.getElementById("loaiHD").value = hopDong.loaiHD;
     document.getElementById("nguoiThuHuong").value = hopDong.nguoiThuHuong;
-    document.getElementById("nhanVien").value = hopDong.nhanVien;
-    document.getElementById("ngayBatDau").value = hopDong.ngayBatDau;
+    document.getElementById("ngayKiKet").value = hopDong.ngayKiKet;
     document.getElementById("ngayKetThuc").value = hopDong.ngayKetThuc;
   
-    document.getElementById("maHD").readOnly = true;
-    document.getElementById("nguoiThuHuong").readOnly = true;
-    document.getElementById("nhanVien").readOnly = true;
-  
-    document.getElementById("editForm").addEventListener("submit", function (e) {
+    // Lưu thay đổi
+    document.getElementById("editForm").addEventListener("submit", (e) => {
       e.preventDefault();
   
-      const newBD = document.getElementById("ngayBatDau").value;
-      const newKT = document.getElementById("ngayKetThuc").value;
+      Contact[index].loaiHD = document.getElementById("loaiHD").value;
+      Contact[index].nguoiThuHuong = document.getElementById("nguoiThuHuong").value;
+      Contact[index].ngayKiKet = document.getElementById("ngayKiKet").value;
+      Contact[index].ngayKetThuc = document.getElementById("ngayKetThuc").value;
   
-      const index = dsHopDong.findIndex(h => h.maHD.trim() === maHD?.trim());
-      if (index !== -1) {
-        dsHopDong[index].ngayBatDau = newBD;
-        dsHopDong[index].ngayKetThuc = newKT;
-        localStorage.setItem("dsHopDong", JSON.stringify(dsHopDong));
-        alert("Cập nhật thành công!");
-        window.location.href = "list-contact.html";
-      } else {
-        alert("Không tìm thấy hợp đồng để cập nhật!");
-      }
+      // Lưu mảng Contact mới vào localStorage hoặc cập nhật giao diện
+      localStorage.setItem("updatedContactList", JSON.stringify(Contact));
+  
+      alert("Đã lưu thay đổi!");
+      window.location.href = "list-contact.html";
     });
   });
   
