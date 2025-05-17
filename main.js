@@ -30,10 +30,10 @@ function handleLogin(event) {
                 window.location.href = "seller.html";
                 break;
             case "supervisor":
-                window.location.href = "supervisor.html";
+                window.location.href = "./Supervisor/supervisor.html";
                 break;
             case "accountant":
-                window.location.href = "accountant.html";
+                window.location.href = "./AccountantView/accountant.html";
                 break;
             case "user":
                 window.location.href = "user.html";
