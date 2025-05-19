@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta view="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="supervisor.css" />
+    <link rel="stylesheet" href="viewInfoStyle.css" />
 
     <link
       rel="stylesheet"
@@ -31,7 +31,7 @@
 
     <script src="../AccountantView/accountant-data-test.js"></script>
 
-    <title>supervisor</title>
+    <title>supervisor view infomation</title>
   </head>
   <body>
     <div
@@ -57,44 +57,40 @@
         </li>
       </ul>
     </div>
-    <div>
-      <div>
-        <select id="LoaiHD" name="LoaiHD">
-            <option value="tatCa">Tất cả</option>
-            <option value="Bảo hiểm xã hội">Bảo hiểm xã hội</option>
-            <option value="Bảo hiểm nhân thọ">Bảo hiểm nhân thọ</option>
-            <option value="Bảo hiểm ô tô">Bảo hiểm ô tô</option>
-            <option value="Bảo hiểm xe máy">Bảo hiểm xe máy</option>
-            <option value="Bảo hiểm nhà ở">Bảo hiểm nhà ở</option>
-            <option value="Bảo hiểm tai nạn">Bảo hiểm tai nạn</option>
-        </select>
-      </div>
-      <div class="content p-3 side out-wrapper">
+    
+    <div class="content out-wrapper p-3">
         <div class="table-wrapper">
-          <h2>Danh Sách Hợp Đồng Bảo Hiểm</h2>
-          <table id="contactTable">
-            <thead>
-              <tr>
-                <th class="bg-primary">Mã HD</th>
-                <th class="bg-primary">Loại hợp đồng</th>
-                <th class="bg-primary">Tên người bảo hiểm</th>
-                <th class="bg-primary">Ngày tháng năm sinh</th>
-                <th class="bg-primary" style="padding-right: 10px;">Xem bảo hiểm</th>
-              </tr>
-            </thead>
-
-            <tbody>
-              <!-- Dữ liệu sẽ được thêm vào đây bằng JavaScript -->
-              <script src="ContactList.js" defer></script>
-            </tbody>
-          </table>
+            <div class="header text-center p-5">
+                <h3>Hợp Đồng Bảo Hiểm</h3>
+            </div>
+            <div class="p-5">
+                <div class="one-row">
+                    <p style="text-align: left; width: 60%;" id="hoTen">Họ Tên: </p><p id="gioiTinh">Giới tính: </p>
+                </div>
+                <div class="one-row">
+                    <p id="diaChi" style="width: 60%;">Địa chỉ: .........</p><p id="ngaySinh">Năm sinh: </p>
+                </div>
+                <div class="one-row">
+                    <p id="maHDBH" style="width: 60%;">Mã hợp đồng: </p><p id="loaiHD">Loại hợp đồng: ......</p>
+                </div>
+                <p id="ngaybatdau">Ngày bắt đầu đươc bảo hiểm: 20/04/2023</p>
+                <p id="ngayketthuc">Ngày kết thúc hợp đồng: 29/07/2068</p>
+                <div class="one-row">
+                  <p style="width: 60%;">Số tiền thu: 1.000.000</p><p>Nội dung thu: Tiền bảo hiểm</p>
+                </div>
+                <p>Bệnh án: ......</p>
+            </div>
+            <div style="float: right; margin-right: 10%; margin-top: 5%;">
+                <a href="supervisor.html">
+                    <button type="button" class="btn btn-outline-danger">Hủy</button>
+                </a>
+                <button type="button" class="btn btn-outline-success" onclick="exportToExcel(new URLSearchParams(window.location.search).get('maHD'))">Kết xuất</button>
+            </div>
         </div>
-      </div>
-      <div style="text-align: right; margin-right: 12.5%;">
-        <button style="border-radius: 5px; margin-top: 20px; margin-bottom: 20px;" onclick="exportToExcel('tatCa')">kết xuất thông tin</button>
-      </div>
-      <script src="../AccountantView/exportToExcel.js"></script>
     </div>
+
+    <script src="../AccountantView/ContactListInfo.js" defer></script>
+    <script src="../AccountantView/exportToExcel.js"></script>
 
     <div class="footer bg-dark text-white text-center p-3" style="clear: both">
       <p>&copy; 2025 Accountant Project</p>

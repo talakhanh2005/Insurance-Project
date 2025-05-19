@@ -4,13 +4,13 @@
 }
 
 .table-wrapper {
-    height: 90vh;
+    height: 93vh;
     min-height: fit-content;
 }
 
 .out-wrapper {
     max-width: 50%;
-    margin-top: 30px;
+    margin-top: 20px;
     margin-left: 35%;
     box-shadow: 0 2px 8px rgba(0,0,0,0.1);
     padding: 10px;
