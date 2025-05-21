@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Thêm Mới Nhân Viên</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css">
+</head>
+<body>
+  <div class="container mt-4">
+    <h2 class="mb-4">Thông tin nhân viên</h2>
+    <form id="addEmployeeForm">
+      <div class="form-group">
+        <label>Mã Nhân Viên</label>
+        <input type="text" id="manv" class="form-control" readonly>
+      </div>
+      <div class="form-group">
+        <label>Tên nhân viên</label>
+        <input type="text" id="tennv" class="form-control">
+      </div>
+      <div class="form-group">
+        <label>Ngày tháng năm sinh</label>
+        <input type="date" id="date" class="form-control" required>
+      </div>
+      <div class="form-group">
+        <label>Loại nhân viên</label>
+        <select id="role" name="role">
+            <option value="seller">Nhân viên bán hàng(người lập hợp đồng)</option>
+            <option value="supervisor">Nhân viên giám sát</option>
+            <option value="accountant">Nhân viên kế toán</option>
+        </select>
+      </div>
+      <div class="form-group" id = "labelHopDong" style="display: none;">
+        <label>Hợp đồng quản lý</label>
+        <select id="hd" name="hd">
+            <option value="BHYT">Bảo Hiểm Y Tế</option>
+            <option value="BHNT">Bảo Hiểm Nhân Thọ</option>
+            <option value="BHXM">Bảo hiểm xe máy</option>
+        </select>
+      </div>
+      <button type="submit" class="btn btn-success">Tạo tài khoản nhân viên</button>
+      <a href="employee.html" class="btn btn-secondary ml-2">Hủy</a>
+    </form>
+  </div>
+  <script>
+    const roleSelect = document.getElementById("role");
+    const labelHopDong = document.getElementById("labelHopDong");
+  
+    // Hiện/ẩn hợp đồng khi chọn role
+    roleSelect.addEventListener("change", function () {
+      const selectedRole = this.value;
+      if (selectedRole === "accountant" || selectedRole === "supervisor") {
+        labelHopDong.style.display = "block";
+      } else {
+        labelHopDong.style.display = "none";
+      }
+    });
+  
+    document.addEventListener("DOMContentLoaded", function () {
+      // Tạo mã nhân viên tự động
+      const manv = "NV" + Date.now();
+      document.getElementById("manv").value = manv;
+  
+      // Xử lý khi submit form
+      document.getElementById("addEmployeeForm").addEventListener("submit", function (e) {
+        e.preventDefault();
+  
+        const selectedRole = document.getElementById("role").value;
+        const Role = (selectedRole === "accountant" || selectedRole === "supervisor")
+          ? document.getElementById("role").value
+          : null;
+  
+        const nhanVien = {
+          manv: document.getElementById("manv").value,
+          tennv: document.getElementById("tennv").value,
+          date: document.getElementById("date").value,
+          role: selectedRole,
+          hopDong: hopDong
+        };
+  
+        // Lưu vào localStorage
+        let dsNhanVien = JSON.parse(localStorage.getItem("dsNhanVien")) || [];
+        dsNhanVien.push(nhanVien);
+        localStorage.setItem("dsNhanVien", JSON.stringify(dsNhanVien));
+  
+        alert("Đã lưu thông tin nhân viên!");
+        window.location.href = "employee.html";
+      });
+    });
+  </script>
+  
+  
+</body>
+</html>
