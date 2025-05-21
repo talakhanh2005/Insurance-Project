@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Sửa Thông Tin Nhân Viên</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" />
+</head>
+<body>
+  <div class="container mt-4">
+    <h2 class="mb-4">Sửa Thông Tin Nhân Viên</h2>
+    <form id="editEmployeeForm">
+      <div class="form-group">
+        <label>Mã Nhân Viên</label>
+        <input type="text" id="manv" class="form-control" readonly />
+      </div>
+      <div class="form-group">
+        <label>Tên nhân viên</label>
+        <input type="text" id="tennv" class="form-control" required />
+      </div>
+      <div class="form-group">
+        <label>Ngày tháng năm sinh</label>
+        <input type="date" id="date" class="form-control" required />
+      </div>
+      <div class="form-group">
+        <label>Loại nhân viên</label>
+        <input type="text" id="role" class="form-control" readonly />
+      </div>
+      <div class="form-group" id="labelHopDong">
+        <label>Hợp đồng quản lý</label>
+        <select id="hopDong" class="form-control">
+          <option value="BHYT">Bảo Hiểm Y Tế</option>
+          <option value="BHNT">Bảo Hiểm Nhân Thọ</option>
+          <option value="BHXM">Bảo hiểm xe máy</option>
+        </select>
+      </div>
+      <button type="submit" class="btn btn-primary">Lưu Thay Đổi</button>
+      <a href="javascript:history.back()" class="btn btn-secondary ml-2">Hủy</a>
+    </form>
+  </div>
+
+  <script src="edit-employee.js"></script>
+</body>
+</html>
