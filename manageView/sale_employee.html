@@ -42,7 +42,7 @@
       </thead>
       <tbody></tbody>
     </table>
-    <a href="add-employee.html" class="btn btn-primary mb-3">+ Thêm nhân viên sale</a>
+    <a href="add-employee.html?role=seller" class="btn btn-primary mb-3">+ Thêm nhân viên sale</a>
   </div>
 
   <div class="footer bg-dark text-white text-center p-3" style="clear: both;">
@@ -56,13 +56,13 @@
   <script>
     document.addEventListener("DOMContentLoaded", function () {
       const tableBody = document.querySelector("#employeeTable tbody");
-
+  
       // Lấy danh sách từ localStorage hoặc fallback sang file js
-      const dsSeller = JSON.parse(localStorage.getItem("dsSeller")) || Seller;
-
+      const dsSeller = JSON.parse(localStorage.getItem("dsSeller")) || Accountant;
+  
       // Xoá dữ liệu cũ
       tableBody.innerHTML = "";
-
+  
       // Thêm dữ liệu vào bảng
       dsSeller.forEach(nv => {
         const tr = document.createElement("tr");
@@ -72,13 +72,27 @@
           <td>Nhân viên sale</td>
           <td><span class="status-online">Online</span></td>
           <td>
-            <button class="btn btn-edit btn-sm btn-warning">Sửa</button>
-            <button class="btn btn-delete btn-sm btn-danger">Xoá</button>
+            <button class="btn btn-edit btn-sm btn-warning" onclick="editEmployee('${nv.manv}')">Sửa</button>
+            <button class="btn btn-delete btn-sm btn-danger" onclick="deleteEmployee('${nv.manv}')">Xoá</button>
           </td>
         `;
         tableBody.appendChild(tr);
       });
     });
+  
+    function editEmployee(manv) {
+      window.location.href = `edit-employee.html?manv=${manv}&role=seller`;
+    }
+  
+    function deleteEmployee(manv) {
+      if (!confirm("Bạn có chắc chắn muốn xoá nhân viên này?")) return;
+  
+      const dsSeller = JSON.parse(localStorage.getItem("dsSeller")) || [];
+      const newList = dsSeller.filter(nv => nv.manv !== manv);
+      localStorage.setItem("dsSeller", JSON.stringify(newList));
+      location.reload();
+    }
   </script>
+  
 </body>
 </html>

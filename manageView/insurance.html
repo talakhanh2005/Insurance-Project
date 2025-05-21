@@ -1,23 +1,124 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="vi">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Insurance Project</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.7/dist/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+  <meta charset="UTF-8">
+  <title>Quản lý bảo hiểm</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
+  <style>
+    body {
+      padding: 20px;
+    }
+    h2 {
+      margin-bottom: 20px;
+    }
+    table {
+      margin-top: 20px;
+    }
+  </style>
 </head>
 <body>
-    <header>
-        <h1>Welcome to the Insurance Management System</h1>
-    </header>
-    <main>
-        <p>This is a basic HTML template for the Insurance Project.</p>
-    </main>
-    <footer>
-        <p>&copy; 2023 Insurance Project. All rights reserved.</p>
-    </footer>
+  <div class="container">
+    <h2>Danh sách hợp đồng bảo hiểm</h2>
+
+    <form id="insuranceForm" class="form-inline mb-3">
+      <input type="text" id="mabh" placeholder="Mã BH" class="form-control mr-2" required>
+      <input type="text" id="tenbh" placeholder="Tên BH" class="form-control mr-2" required>
+      <input type="date" id="ngaykyket" class="form-control mr-2" required>
+      <input type="date" id="ngayketthuc" class="form-control mr-2" required>
+      <input type="text" id="manvquanli" placeholder="Mã NVQL" class="form-control mr-2" required>
+      <button type="submit" class="btn btn-success" id="submitBtn">Thêm</button>
+    </form>
+
+    <table class="table table-bordered">
+      <thead class="thead-light">
+        <tr>
+          <th>Mã BH</th>
+          <th>Tên BH</th>
+          <th>Ngày ký kết</th>
+          <th>Ngày kết thúc</th>
+          <th>Mã nhân viên quản lý</th>
+          <th>Hành động</th>
+        </tr>
+      </thead>
+      <tbody id="insuranceTableBody"></tbody>
+    </table>
+  </div>
+
+  <script src="data-insurance.js"></script>
+  <script>
+    const tableBody = document.getElementById('insuranceTableBody');
+    const form = document.getElementById('insuranceForm');
+    const submitBtn = document.getElementById('submitBtn');
+
+    let insuranceList = JSON.parse(localStorage.getItem('insuranceData')) || Insurance;
+    let editIndex = -1;
+
+    function renderTable() {
+      tableBody.innerHTML = '';
+      insuranceList.forEach((item, index) => {
+        const row = `
+          <tr>
+            <td>${item.mabh}</td>
+            <td>${item.tenbh}</td>
+            <td>${item.ngaykyket}</td>
+            <td>${item.ngayketthuc}</td>
+            <td>${item.manvquanli}</td>
+            <td>
+              <button class="btn btn-primary btn-sm mr-1" onclick="editInsurance(${index})">Sửa</button>
+              <button class="btn btn-danger btn-sm" onclick="deleteInsurance(${index})">Xoá</button>
+            </td>
+          </tr>
+        `;
+        tableBody.innerHTML += row;
+      });
+      localStorage.setItem('insuranceData', JSON.stringify(insuranceList));
+    }
+
+    function deleteInsurance(index) {
+      if (confirm('Bạn có chắc chắn muốn xoá hợp đồng này không?')) {
+        insuranceList.splice(index, 1);
+        renderTable();
+      }
+    }
+
+    function editInsurance(index) {
+      const item = insuranceList[index];
+      document.getElementById('mabh').value = item.mabh;
+      document.getElementById('tenbh').value = item.tenbh;
+      document.getElementById('ngaykyket').value = item.ngaykyket;
+      document.getElementById('ngayketthuc').value = item.ngayketthuc;
+      document.getElementById('manvquanli').value = item.manvquanli;
+      editIndex = index;
+      submitBtn.textContent = 'Cập nhật';
+      submitBtn.classList.remove('btn-success');
+      submitBtn.classList.add('btn-warning');
+    }
+
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+      const newItem = {
+        mabh: document.getElementById('mabh').value.trim(),
+        tenbh: document.getElementById('tenbh').value.trim(),
+        ngaykyket: document.getElementById('ngaykyket').value,
+        ngayketthuc: document.getElementById('ngayketthuc').value,
+        manvquanli: document.getElementById('manvquanli').value.trim(),
+      };
+
+      if (editIndex === -1) {
+        insuranceList.push(newItem);
+      } else {
+        insuranceList[editIndex] = newItem;
+        editIndex = -1;
+        submitBtn.textContent = 'Thêm';
+        submitBtn.classList.remove('btn-warning');
+        submitBtn.classList.add('btn-success');
+      }
+
+      form.reset();
+      renderTable();
+    });
+
+    renderTable();
+  </script>
 </body>
 </html>

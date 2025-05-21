@@ -1,59 +1,70 @@
-document.addEventListener("DOMContentLoaded", function () {
-    const tableBody = document.querySelector("#userTable tbody");
-  
-    // Lấy danh sách user từ localStorage hoặc file gốc
-    let dsUser = JSON.parse(localStorage.getItem("dsUser")) || User;
-  
-    function saveAndRender() {
-      localStorage.setItem("dsUser", JSON.stringify(dsUser));
-      renderTable();
-    }
-  
-    function renderTable() {
-      tableBody.innerHTML = "";
-  
-      dsUser.forEach(user => {
-        const tr = document.createElement("tr");
-  
-        tr.innerHTML = `
-          <td>${user.Id}</td>
-          <td>${user.Fullname}</td>
-          <td>${user.Date}</td>
-          <td>
-            <span class="${user.State === 'online' ? 'text-success' : 'text-secondary'}">${user.State}</span>
-          </td>
-          <td>
-            <button class="btn btn-sm btn-info btn-toggle" data-id="${user.Id}">Chuyển trạng thái</button>
-            <button class="btn btn-sm btn-danger btn-delete" data-id="${user.Id}">Xoá</button>
-          </td>
-        `;
-  
-        tableBody.appendChild(tr);
-      });
-  
-      // Gán sự kiện cho nút
-      document.querySelectorAll(".btn-delete").forEach(btn => {
-        btn.addEventListener("click", function () {
-          const id = this.dataset.id;
-          if (confirm("Bạn có chắc muốn xoá user này?")) {
-            dsUser = dsUser.filter(u => u.Id !== id);
-            saveAndRender();
-          }
-        });
-      });
-  
-      document.querySelectorAll(".btn-toggle").forEach(btn => {
-        btn.addEventListener("click", function () {
-          const id = this.dataset.id;
-          const user = dsUser.find(u => u.Id === id);
-          if (user) {
-            user.State = user.State === "online" ? "offline" : "online";
-            saveAndRender();
-          }
-        });
-      });
-    }
-  
-    renderTable();
+// user-management.js
+
+let userList = JSON.parse(localStorage.getItem("userData")) || User;
+const tbody = document.querySelector("#userTable tbody");
+
+function renderTable() {
+  tbody.innerHTML = "";
+  userList.forEach((user, index) => {
+    tbody.innerHTML += `
+      <tr>
+        <td>${user.Id}</td>
+        <td>${user.Fullname}</td>
+        <td>${user.Date}</td>
+        <td>${user.State}</td>
+        <td>
+          <button class="btn btn-danger btn-sm" onclick="deleteUser(${index})">Xoá</button>
+        </td>
+      </tr>
+    `;
   });
-  
+  localStorage.setItem("userData", JSON.stringify(userList));
+}
+
+function deleteUser(index) {
+  if (confirm("Bạn chắc chắn xoá?")) {
+    userList.splice(index, 1);
+    renderTable();
+  }
+}
+
+function showAddUserForm() {
+  const formHTML = `
+    <tr id="addUserRow">
+      <td><input class="form-control" id="newId" placeholder="ID"/></td>
+      <td><input class="form-control" id="newFullname" placeholder="Họ tên"/></td>
+      <td><input type="date" class="form-control" id="newDate"/></td>
+      <td>
+        <select class="form-control" id="newState">
+          <option value="online">Online</option>
+          <option value="offline">Offline</option>
+        </select>
+      </td>
+      <td>
+        <button class="btn btn-success btn-sm" onclick="addUser()">Lưu</button>
+        <button class="btn btn-secondary btn-sm" onclick="cancelAddUser()">Huỷ</button>
+      </td>
+    </tr>
+  `;
+  tbody.insertAdjacentHTML("afterbegin", formHTML);
+  document.getElementById("addBtn").disabled = true;
+}
+
+function cancelAddUser() {
+  document.getElementById("addUserRow")?.remove();
+  document.getElementById("addBtn").disabled = false;
+}
+
+function addUser() {
+  const newUser = {
+    Id: document.getElementById("newId").value,
+    Fullname: document.getElementById("newFullname").value,
+    Date: document.getElementById("newDate").value,
+    State: document.getElementById("newState").value
+  };
+  userList.push(newUser);
+  cancelAddUser();
+  renderTable();
+}
+
+renderTable();
