@@ -66,8 +66,8 @@
         e.preventDefault();
   
         const selectedRole = document.getElementById("role").value;
-        const Role = (selectedRole === "accountant" || selectedRole === "supervisor")
-          ? document.getElementById("role").value
+        const hopDong = (selectedRole === "accountant" || selectedRole === "supervisor")
+          ? document.getElementById("hd").value
           : null;
   
         const nhanVien = {
@@ -79,12 +79,39 @@
         };
   
         // Lưu vào localStorage
-        let dsNhanVien = JSON.parse(localStorage.getItem("dsNhanVien")) || [];
-        dsNhanVien.push(nhanVien);
-        localStorage.setItem("dsNhanVien", JSON.stringify(dsNhanVien));
-  
+        let key = "";
+        if (selectedRole === "accountant") key = "dsAccountant";
+        else if (selectedRole === "supervisor") key = "dsSupervisor";
+        else key = "dsSeller";
+
+        let dsTheoLoai = JSON.parse(localStorage.getItem(key)) || [];
+        dsTheoLoai.push(nhanVien);
+        localStorage.setItem(key, JSON.stringify(dsTheoLoai));
+
+        if (dsTheoLoai.length === 0 && key === "dsAccountant") {
+            dsTheoLoai = Accountant; // gộp lại dữ liệu gốc nếu chưa có gì
+        }
+        else if (dsTheoLoai.length === 0 && key === "dsSupervisor") {
+            dsTheoLoai = Supervisor; // gộp lại dữ liệu gốc nếu chưa có gì
+        }
+        else {
+            dsTheoLoai = Seller; // gộp lại dữ liệu gốc nếu chưa có gì
+        }
+
+        dsTheoLoai.push(nhanVien);
+        localStorage.setItem(key, JSON.stringify(dsTheoLoai));
+        
         alert("Đã lưu thông tin nhân viên!");
-        window.location.href = "employee.html";
+        
+        if(selectedRole === "accountant"){
+            window.location.href = "accountant_employee.html";
+        }
+        else if(selectedRole === "supervisor"){
+            window.location.href = "supervisor_employee.html";
+        }
+        else{
+            window.location.href = "sale_employee.html";
+        }
       });
     });
   </script>
