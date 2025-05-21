@@ -10,33 +10,38 @@
   <div class="container mt-4">
     <h2 class="mb-4">Sửa Thông Tin Nhân Viên</h2>
     <form id="editEmployeeForm">
-      <div class="form-group">
-        <label>Mã Nhân Viên</label>
-        <input type="text" id="manv" class="form-control" readonly />
-      </div>
-      <div class="form-group">
-        <label>Tên nhân viên</label>
-        <input type="text" id="tennv" class="form-control" required />
-      </div>
-      <div class="form-group">
-        <label>Ngày tháng năm sinh</label>
-        <input type="date" id="date" class="form-control" required />
-      </div>
-      <div class="form-group">
-        <label>Loại nhân viên</label>
-        <input type="text" id="role" class="form-control" readonly />
-      </div>
-      <div class="form-group" id="labelHopDong">
-        <label>Hợp đồng quản lý</label>
-        <select id="hopDong" class="form-control">
-          <option value="BHYT">Bảo Hiểm Y Tế</option>
-          <option value="BHNT">Bảo Hiểm Nhân Thọ</option>
-          <option value="BHXM">Bảo hiểm xe máy</option>
-        </select>
-      </div>
-      <button type="submit" class="btn btn-primary">Lưu Thay Đổi</button>
-      <a href="javascript:history.back()" class="btn btn-secondary ml-2">Hủy</a>
-    </form>
+        <div class="form-group">
+          <label>Mã Nhân Viên</label>
+          <input type="text" id="manv" class="form-control" readonly>
+        </div>
+        <div class="form-group">
+          <label>Tên nhân viên</label>
+          <input type="text" id="tennv" class="form-control">
+        </div>
+        <div class="form-group">
+          <label>Ngày tháng năm sinh</label>
+          <input type="date" id="date" class="form-control" required>
+        </div>
+        <div class="form-group">
+          <label>Loại nhân viên</label>
+          <select id="role" name="role" class="form-control">
+            <option value="seller">Nhân viên bán hàng</option>
+            <option value="supervisor">Nhân viên giám sát</option>
+            <option value="accountant">Nhân viên kế toán</option>
+          </select>
+        </div>
+        <div class="form-group" id="labelHopDong" style="display: none;">
+          <label>Hợp đồng quản lý</label>
+          <select id="hd" name="hd" class="form-control">
+            <option value="BHYT">Bảo Hiểm Y Tế</option>
+            <option value="BHNT">Bảo Hiểm Nhân Thọ</option>
+            <option value="BHXM">Bảo hiểm xe máy</option>
+          </select>
+        </div>
+        <button type="submit" class="btn btn-success">Lưu thay đổi</button>
+        <a href="accountant_employee.html" class="btn btn-secondary ml-2">Hủy</a>
+      </form>
+      
   </div>
 
   <script src="edit-employee.js"></script>

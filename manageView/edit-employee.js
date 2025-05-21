@@ -1,62 +1,94 @@
 document.addEventListener("DOMContentLoaded", function () {
     const urlParams = new URLSearchParams(window.location.search);
     const manv = urlParams.get("manv");
-    const role = urlParams.get("role");
+    const currentRole = urlParams.get("role"); // Vai trò ban đầu
   
-    if (!manv || !role) {
+    if (!manv || !currentRole) {
       alert("Thiếu thông tin nhân viên!");
-      window.location.href = "employee.html";
       return;
     }
   
-    let storageKey = "";
-    if (role === "accountant") storageKey = "dsAccountant";
-    else if (role === "supervisor") storageKey = "dsSupervisor";
-    else storageKey = "dsSeller";
+    const roleSelect = document.getElementById("role");
+    const labelHopDong = document.getElementById("labelHopDong");
+    const form = document.getElementById("editEmployeeForm");
   
-    let dsNhanVien = JSON.parse(localStorage.getItem(storageKey)) || [];
-    const nhanVien = dsNhanVien.find(nv => nv.manv === manv);
+    // Hiển thị/ẩn hợp đồng
+    roleSelect.addEventListener("change", function () {
+      const selected = this.value;
+      if (selected === "accountant" || selected === "supervisor") {
+        labelHopDong.style.display = "block";
+      } else {
+        labelHopDong.style.display = "none";
+      }
+    });
   
-    if (!nhanVien) {
+    // Lấy key trong localStorage theo role
+    function getKey(role) {
+      if (role === "accountant") return "dsAccountant";
+      if (role === "supervisor") return "dsSupervisor";
+      return "dsSeller";
+    }
+  
+    // Load dữ liệu từ localStorage
+    const oldList = JSON.parse(localStorage.getItem(getKey(currentRole))) || [];
+    const employee = oldList.find(nv => nv.manv === manv);
+  
+    if (!employee) {
       alert("Không tìm thấy nhân viên!");
-      window.location.href = "employee.html";
       return;
     }
   
-    document.getElementById("manv").value = nhanVien.manv;
-    document.getElementById("tennv").value = nhanVien.tennv;
-    document.getElementById("date").value = nhanVien.date;
-    document.getElementById("role").value = nhanVien.role;
-  
-    // Hiển thị hợp đồng nếu có
-    if (role === "accountant" || role === "supervisor") {
-      document.getElementById("hopDong").value = nhanVien.hopDong || "BHYT";
-    } else {
-      document.getElementById("labelHopDong").style.display = "none";
+    // Hiển thị dữ liệu cũ
+    document.getElementById("manv").value = employee.manv;
+    document.getElementById("tennv").value = employee.tennv;
+    document.getElementById("date").value = employee.date;
+    document.getElementById("role").value = employee.role;
+    if (employee.role === "accountant" || employee.role === "supervisor") {
+      document.getElementById("hd").value = employee.hopDong || "BHYT";
+      labelHopDong.style.display = "block";
     }
   
-    document.getElementById("editEmployeeForm").addEventListener("submit", function (e) {
+    // Xử lý cập nhật khi submit
+    form.addEventListener("submit", function (e) {
       e.preventDefault();
   
-      const updatedNhanVien = {
-        manv: document.getElementById("manv").value,
+      const newRole = document.getElementById("role").value;
+      const newKey = getKey(newRole);
+      const oldKey = getKey(currentRole);
+  
+      const updatedEmployee = {
+        manv: employee.manv,
         tennv: document.getElementById("tennv").value,
         date: document.getElementById("date").value,
-        role: document.getElementById("role").value,
-        hopDong: (role === "accountant" || role === "supervisor") ? document.getElementById("hopDong").value : null
+        role: newRole,
+        hopDong: (newRole === "accountant" || newRole === "supervisor")
+          ? document.getElementById("hd").value
+          : null
       };
   
-      const index = dsNhanVien.findIndex(nv => nv.manv === manv);
-      if (index !== -1) {
-        dsNhanVien[index] = updatedNhanVien;
-        localStorage.setItem(storageKey, JSON.stringify(dsNhanVien));
-        alert("Đã cập nhật thông tin nhân viên!");
+      // Xoá khỏi danh sách cũ
+      let oldListUpdated = oldList.filter(nv => nv.manv !== manv);
+      localStorage.setItem(oldKey, JSON.stringify(oldListUpdated));
   
-        if (role === "accountant") window.location.href = "accountant_employee.html";
-        else if (role === "supervisor") window.location.href = "supervisor_employee.html";
-        else window.location.href = "sale_employee.html";
+      // Thêm vào danh sách mới
+      const newList = JSON.parse(localStorage.getItem(newKey)) || [];
+      const index = newList.findIndex(nv => nv.manv === manv);
+      if (index !== -1) {
+        newList[index] = updatedEmployee; // Nếu đã có (trùng mã), ghi đè
       } else {
-        alert("Lỗi: Không thể cập nhật.");
+        newList.push(updatedEmployee);
+      }
+      localStorage.setItem(newKey, JSON.stringify(newList));
+  
+      alert("Đã cập nhật thông tin nhân viên!");
+  
+      // Điều hướng
+      if (newRole === "accountant") {
+        window.location.href = "accountant_employee.html";
+      } else if (newRole === "supervisor") {
+        window.location.href = "supervisor_employee.html";
+      } else {
+        window.location.href = "sale_employee.html";
       }
     });
   });
