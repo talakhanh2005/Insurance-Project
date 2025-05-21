@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Log Table</title>
+  <title>Log Management</title>
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -26,44 +26,76 @@
       background-color: #f9f9f9;
     }
   </style>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.7/dist/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css">
 </head>
 <body>
   <h2>Log History Table</h2>
-  <table>
+  <table id="logTable">
     <thead>
       <tr>
         <th>LogID</th>
         <th>User Type</th>
         <th>Action Type</th>
-        <th>ChangedByUserID</th>
+        <th>Changed By UserID</th>
         <th>Detail</th>
         <th>Change Date</th>
       </tr>
     </thead>
-    <tbody>
-      <tr>
-        <td>2</td>
-        <td>InsuranceContracts</td>
-        <td>INSERT</td>
-        <td>101</td>
-        <td>Tạo hợp đồng mới: Số hợp đồng = 202310..., Người đảm bảo...</td>
-        <td>2023-10-27 10:35:00.456</td>
-      </tr>
-    </tbody>
+    <tbody></tbody>
   </table>
-  <div>
-    <div style="text-align: center; margin-top: 20px;">
-        <button type="button" class="btn btn-outline-primary" onclick="redirectToPage()">Quay lại</button>
-        <script>
-          function redirectToPage() {
-            window.location.href = '../adminView.html'; 
-          }
-        </script>
-    </div>
+
+  <div class="text-center mt-4">
+    <button class="btn btn-outline-primary" onclick="redirectToPage()">Quay lại</button>
   </div>
+
+  <!-- Gắn file log -->
+  <script src="data-log.js"></script>
+
+  <!-- Hiển thị bảng log -->
+  <script>
+    function getLogs() {
+      return JSON.parse(localStorage.getItem("logData")) || Log;
+    }
+
+    function saveLogs(logs) {
+      localStorage.setItem("logData", JSON.stringify(logs));
+    }
+
+    function deleteLog(logID) {
+      const confirmDelete = confirm("Bạn có chắc chắn muốn xoá Log này không?");
+      if (!confirmDelete) return;
+
+      const logs = getLogs();
+      const updatedLogs = logs.filter(log => log.LogID !== logID);
+      saveLogs(updatedLogs);
+      renderLogTable();
+    }
+    function renderLogTable() {
+      const tbody = document.querySelector("#logTable tbody");
+      tbody.innerHTML = "";
+
+      const logs = JSON.parse(localStorage.getItem("logData")) || Log;
+
+      logs.forEach(log => {
+        const tr = document.createElement("tr");
+        tr.innerHTML = `
+          <td>${log.LogID}</td>
+          <td>${log.UserType}</td>
+          <td>${log.ActionType}</td>
+          <td>${log.ChangeByUserID}</td>
+          <td>${log.Detail}</td>
+          <td>${log.ChangeDate}</td>
+          <td><button class="btn btn-danger" onclick="deleteLog('${log.LogID}')">Xoá</button></td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
+
+    function redirectToPage() {
+      window.location.href = '../adminView.html';
+    }
+
+    document.addEventListener("DOMContentLoaded", renderLogTable);
+  </script>
 </body>
 </html>
