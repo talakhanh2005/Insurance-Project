@@ -65,15 +65,44 @@ function login(event) {
       return response.json();
     })
     .then(function(data) {
-      if (data.error) {
-        alert("Lỗi: " + data.error);
-      } else {
-        alert("✅ " + data.message + "\nXin chào " + data.user.full_name);
-        // Bạn có thể lưu thông tin người dùng nếu cần
-        console.log("Người dùng:", data.user);
-      }
+        if (data.error) {
+            console.log("Lỗi: " + data.error);
+        } else {
+            const role = data.user.role;
+            if (role === "Admin") {
+                window.location.href = "adminView.html";
+            }
+        }
     })
     .catch(function(error) {
-      alert("Lỗi kết nối: " + error);
+        console.log("Lỗi kết nối: " + error);
+    });
+}
+
+function logout(event) {
+
+    event.preventDefault();
+
+    const logoutUrl = "http://127.0.0.1:5000/logout";
+
+    fetch(logoutUrl, {
+        method: "POST",
+        credentials: "include" 
+    })
+    .then(function(response) {
+        
+        if (!response.ok) {
+            
+            return response.json().then(errorData => {
+                throw new Error(errorData.error || 'Đăng xuất không thành công.');
+            });
+        }
+        return response.json();
+    })
+    .then(function(data) {
+        window.location.href = "./index.html"; // Thay đổi thành trang đăng nhập 
+    })
+    .catch(function(error) {
+        showMessageBox("Lỗi Đăng Xuất", "Không thể đăng xuất: " + error.message);
     });
 }

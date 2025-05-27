@@ -11,23 +11,23 @@
     <h2 class="mb-4">Thông tin nhân viên</h2>
     <form id="addEmployeeForm">
       <div class="form-group">
-        <label>Mã Nhân Viên</label>
-        <input type="text" id="manv" class="form-control" readonly>
-      </div>
-      <div class="form-group">
         <label>Tên nhân viên</label>
-        <input type="text" id="tennv" class="form-control">
+        <input type="text" id="full_name" class="form-control">
       </div>
       <div class="form-group">
-        <label>Ngày tháng năm sinh</label>
-        <input type="date" id="date" class="form-control" required>
+        <label>Tên tài khoản</label>
+        <input type="text" id="username" class="form-control">
+      </div>
+      <div class="form-group">
+        <label>Mật khẩu</label>
+        <input type="password" id="password" class="form-control">
       </div>
       <div class="form-group">
         <label>Loại nhân viên</label>
         <select id="role" name="role">
-            <option value="seller">Nhân viên bán hàng(người lập hợp đồng)</option>
-            <option value="supervisor">Nhân viên giám sát</option>
-            <option value="accountant">Nhân viên kế toán</option>
+            <option value="ContractCreator">Nhân viên bán hàng(người lập hợp đồng)</option>
+            <option value="Supervisor">Nhân viên giám sát</option>
+            <option value="Accountant">Nhân viên kế toán</option>
         </select>
       </div>
       <div class="form-group" id = "labelHopDong" style="display: none;">
@@ -42,80 +42,8 @@
       <a href="employee.html" class="btn btn-secondary ml-2">Hủy</a>
     </form>
   </div>
-  <script>
-    const roleSelect = document.getElementById("role");
-    const labelHopDong = document.getElementById("labelHopDong");
-  
-    // Hiện/ẩn hợp đồng khi chọn role
-    roleSelect.addEventListener("change", function () {
-      const selectedRole = this.value;
-      if (selectedRole === "accountant" || selectedRole === "supervisor") {
-        labelHopDong.style.display = "block";
-      } else {
-        labelHopDong.style.display = "none";
-      }
-    });
-  
-    document.addEventListener("DOMContentLoaded", function () {
-      // Tạo mã nhân viên tự động
-      const manv = "NV" + Date.now();
-      document.getElementById("manv").value = manv;
-  
-      // Xử lý khi submit form
-      document.getElementById("addEmployeeForm").addEventListener("submit", function (e) {
-        e.preventDefault();
-  
-        const selectedRole = document.getElementById("role").value;
-        const hopDong = (selectedRole === "accountant" || selectedRole === "supervisor")
-          ? document.getElementById("hd").value
-          : null;
-  
-        const nhanVien = {
-          manv: document.getElementById("manv").value,
-          tennv: document.getElementById("tennv").value,
-          date: document.getElementById("date").value,
-          role: selectedRole,
-          hopDong: hopDong
-        };
-  
-        // Lưu vào localStorage
-        let key = "";
-        if (selectedRole === "accountant") key = "dsAccountant";
-        else if (selectedRole === "supervisor") key = "dsSupervisor";
-        else key = "dsSeller";
 
-        let dsTheoLoai = JSON.parse(localStorage.getItem(key)) || [];
-        dsTheoLoai.push(nhanVien);
-        localStorage.setItem(key, JSON.stringify(dsTheoLoai));
-
-        if (dsTheoLoai.length === 0 && key === "dsAccountant") {
-            dsTheoLoai = Accountant; // gộp lại dữ liệu gốc nếu chưa có gì
-        }
-        else if (dsTheoLoai.length === 0 && key === "dsSupervisor") {
-            dsTheoLoai = Supervisor; // gộp lại dữ liệu gốc nếu chưa có gì
-        }
-        else {
-            dsTheoLoai = Seller; // gộp lại dữ liệu gốc nếu chưa có gì
-        }
-
-        dsTheoLoai.push(nhanVien);
-        localStorage.setItem(key, JSON.stringify(dsTheoLoai));
-        
-        alert("Đã lưu thông tin nhân viên!");
-        
-        if(selectedRole === "accountant"){
-            window.location.href = "accountant_employee.html";
-        }
-        else if(selectedRole === "supervisor"){
-            window.location.href = "supervisor_employee.html";
-        }
-        else{
-            window.location.href = "sale_employee.html";
-        }
-      });
-    });
-  </script>
-  
+  <script src="add-employee.js"></script>
   
 </body>
 </html>
