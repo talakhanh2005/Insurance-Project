@@ -1,42 +1,48 @@
-const Log = [
-    {
-        "LogID": "LOG001",
-        "UserType": "InsuranceContracts",
-        "ActionType": "INSERT",
-        "ChangeByUserID": "NV010",
-        "Detail": "Tạo hợp đồng mới: Số hợp đồng = 202310..., Người đảm bảo...", 
-        "ChangeDate": "2023-10-27 10:35:00.456"         
-    },
-    {
-        "LogID": "LOG002",
-        "UserType": "Employee",
-        "ActionType": "INSERT",
-        "ChangeByUserID": "NV110",
-        "Detail": "Tạo tài khoản nhân viên mới: NV110", 
-        "ChangeDate": "2024-10-27 10:35:00.456"         
-    },
-    {
-        "LogID": "LOG003",
-        "UserType": "Employee",
-        "ActionType": "DELETE",
-        "ChangeByUserID": "Admin",
-        "Detail": "Xoá tài khoản nhân viên: NV110", 
-        "ChangeDate": "2024-12-12 11:42:56.456"         
-    },
-    {
-        "LogID": "LOG004",
-        "UserType": "InsuranceContracts",
-        "ActionType": "UPDATE",
-        "ChangeByUserID": "Admin",
-        "Detail": "Cập nhật hợp đồng: Số hợp đồng = 177652..., Người đảm bảo...", 
-        "ChangeDate": "2023-10-27 10:35:00.456"         
-    },
-    {
-        "LogID": "LOG005",
-        "UserType": "InsuranceContracts",
-        "ActionType": "UPDATE",
-        "ChangeByUserID": "NV012",
-        "Detail": "Cập nhật hợp đồng mới: Số hợp đồng = 107852..., Người đảm bảo...", 
-        "ChangeDate": "2023-10-27 10:35:00.456"         
+document.addEventListener("DOMContentLoaded", function () {
+
+    fetch("http://127.0.0.1:5000/audit", { credentials: "include" })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error("Không thể lấy dữ liệu log");
+        }
+        return response.json();
+    })
+    .then(data => {
+        // Kiểm tra nếu có lỗi từ backend
+        if (data.error) {
+            alert(data.error);
+            return;
+        }
+
+        // Đổ dữ liệu vào bảng
+        const tbody = document.querySelector("#logTable tbody");
+        data.forEach(log => {
+            const row = document.createElement("tr");
+            row.innerHTML = `
+                <td>${log.log_id}</td>
+                <td>${log.table_name}</td>
+                <td>${log.action_type}</td>
+                <td>${log.changed_by_user_id}</td>
+                <td>${log.details}</td>
+                <td>${new Date(log.change_date).toLocaleString()}</td>
+                <td><button class="btn btn-danger" onclick="deleteLog('${log.log_id}')">Xoá</button></td>
+            `;
+            tbody.appendChild(row);
+        });
+    })
+    .catch(err => {
+        console.error(err);
+        alert("Đã xảy ra lỗi khi tải dữ liệu log");
+    });
+
+    function deleteLog(logID) {
+      const confirmDelete = confirm("Bạn có chắc chắn muốn xoá Log này không?");
+      if (!confirmDelete) return;
+
+      const logs = getLogs();
+      const updatedLogs = logs.filter(log => log.LogID !== logID);
+      saveLogs(updatedLogs);
+      renderLogTable();
     }
-]
+});
+

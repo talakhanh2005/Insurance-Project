@@ -1,41 +1,50 @@
 document.addEventListener("DOMContentLoaded", () => {
-    const maHD = localStorage.getItem("editMaHD");
-    if (!maHD) {
-      alert("Không tìm thấy mã hợp đồng cần sửa");
-      window.location.href = "list-contact.html";
-      return;
-    }
-  
-    // Tìm hợp đồng từ mảng Contact
-    const index = Contact.findIndex(c => c.maHD === maHD);
-    if (index === -1) {
-      alert("Không tìm thấy hợp đồng tương ứng");
-      return;
-    }
-    console.log(index)
-    const hopDong = Contact[index];
-  
-    // Đổ dữ liệu vào form
-    document.getElementById("maHD").value = hopDong.maHD;
-    document.getElementById("loaiHD").value = hopDong["Bảo hiểm nhân thọ"];
-    document.getElementById("nguoiThuHuong").value = hopDong.nguoiThuHuong;
-    document.getElementById("ngayKiKet").value = hopDong.ngayKiKet;
-    document.getElementById("ngayKetThuc").value = hopDong.ngayKetThuc;
-  
-    // Lưu thay đổi
-    document.getElementById("editForm").addEventListener("submit", (e) => {
-      e.preventDefault();
-  
-      Contact[index]["Bảo hiểm nhân thọ"] = document.getElementById("loaiHD").value;
-      Contact[index].nguoiThuHuong = document.getElementById("nguoiThuHuong").value;
-      Contact[index].ngayKiKet = document.getElementById("ngayKiKet").value;
-      Contact[index].ngayKetThuc = document.getElementById("ngayKetThuc").value;
-  
-      // Lưu mảng Contact mới vào localStorage hoặc cập nhật giao diện
-      localStorage.setItem("updatedContactList", JSON.stringify(Contact));
-  
-      alert("Đã lưu thay đổi!");
-      window.location.href = "list-contact.html";
-    });
-  });
+    
+  document.getElementById("editEmployeeForm").addEventListener("submit", function (e) {
+    e.preventDefault();
+    urlParams = new URLSearchParams(window.location.search);
+    const manv = urlParams.get("manv");
+    const fullName = document.getElementById("tennv").value;
+    const role = document.getElementById("role").value;
+    const status = document.getElementById("status").value;
+
+    const isActive = status === "hd" ? 1 : 0;
+
+    const updatedData = {
+      full_name: fullName,
+      role: role,
+      is_active: isActive
+    };
+
+      fetch(`http://127.0.0.1:5000//insured-persons/${id}`, {
+          method: "PUT",
+          headers: {
+              "Content-Type": "application/json"
+          },
+          credentials: "include",
+          body: JSON.stringify(updatedData)
+      })
+      .then(response => {
+          if (!response.ok) {
+              throw new Error("Lỗi khi cập nhật thông tin");
+          }
+          return response.json();
+      })
+      .then(data => {
+
+          if(role === "Accountant"){
+              window.location.href = "accountant_employee.html";
+          }
+          else if(role === "Supervisor"){
+              window.location.href = "supervisor_employee.html";
+          }
+          else{
+              window.location.href = "sale_employee.html";
+          }
+          })
+      .catch(error => {
+          console.error("Lỗi:", error);
+          });
+      });
+});
   

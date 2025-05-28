@@ -72,6 +72,17 @@ function login(event) {
             if (role === "Admin") {
                 window.location.href = "adminView.html";
             }
+            else if (role === "ContractCreator") {
+                window.location.href = "seller.html";
+            }
+            else if (role === "Supervisor") {
+                window.location.href = "./Supervisor/supervisor.html";
+            }
+            else if (role === "Accountant") {
+                window.location.href = "./AccountantView/accountant.html";
+            }else {
+                window.location.href = "user.html";
+            }
         }
     })
     .catch(function(error) {
