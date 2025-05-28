@@ -17,9 +17,9 @@
 
   <div class="sidebar bg-light p-3" style="float: left; width: 20%; height: 100vh;">
     <ul class="nav flex-column">
-      <li class="nav-item"><a class="nav-link" href="./sale_employee.html">Nhân viên sale</a></li>
-      <li class="nav-item"><a class="nav-link" href="./supervisor_employee.html">Nhân viên giám sát</a></li>
-      <li class="nav-item"><a class="nav-link" href="./accountant_employee.html">Nhân viên kế toán</a></li>
+      <li class="nav-item"><a class="nav-link" href="./sale_employee.html?role=ContractCreator">Nhân viên sale</a></li>
+      <li class="nav-item"><a class="nav-link" href="./supervisor_employee.html?role=Supervisor">Nhân viên giám sát</a></li>
+      <li class="nav-item"><a class="nav-link" href="./accountant_employee.html?role=Accountant">Nhân viên kế toán</a></li>
       <li class="nav-item">
         <a class="nav-link" href="../adminView.html">
           <button type="button" class="btn btn-outline-primary">Quay lại</button>
@@ -42,57 +42,16 @@
       </thead>
       <tbody></tbody>
     </table>
-    <a href="add-employee.html?role=seller" class="btn btn-primary mb-3">+ Thêm nhân viên sale</a>
+    <a href="add-employee.html?role=ContractCreator" class="btn btn-primary mb-3">+ Thêm nhân viên sale</a>
   </div>
 
   <div class="footer bg-dark text-white text-center p-3" style="clear: both;">
     <p>&copy; 2025 Insurance Project</p>
   </div>
 
-  <!-- Import dữ liệu mặc định -->
+  <!-- Tải dữ liệu lên bảng -->
   <script src="data-employee-sale.js"></script>
 
-  <!-- Tải dữ liệu lên bảng -->
-  <script>
-    document.addEventListener("DOMContentLoaded", function () {
-      const tableBody = document.querySelector("#employeeTable tbody");
-  
-      // Lấy danh sách từ localStorage hoặc fallback sang file js
-      const dsSeller = JSON.parse(localStorage.getItem("dsSeller")) || Accountant;
-  
-      // Xoá dữ liệu cũ
-      tableBody.innerHTML = "";
-  
-      // Thêm dữ liệu vào bảng
-      dsSeller.forEach(nv => {
-        const tr = document.createElement("tr");
-        tr.innerHTML = `
-          <td>${nv.manv}</td>
-          <td>${nv.tennv}</td>
-          <td>Nhân viên sale</td>
-          <td><span class="status-online">Online</span></td>
-          <td>
-            <button class="btn btn-edit btn-sm btn-warning" onclick="editEmployee('${nv.manv}')">Sửa</button>
-            <button class="btn btn-delete btn-sm btn-danger" onclick="deleteEmployee('${nv.manv}')">Xoá</button>
-          </td>
-        `;
-        tableBody.appendChild(tr);
-      });
-    });
-  
-    function editEmployee(manv) {
-      window.location.href = `edit-employee.html?manv=${manv}&role=seller`;
-    }
-  
-    function deleteEmployee(manv) {
-      if (!confirm("Bạn có chắc chắn muốn xoá nhân viên này?")) return;
-  
-      const dsSeller = JSON.parse(localStorage.getItem("dsSeller")) || [];
-      const newList = dsSeller.filter(nv => nv.manv !== manv);
-      localStorage.setItem("dsSeller", JSON.stringify(newList));
-      location.reload();
-    }
-  </script>
   
 </body>
 </html>

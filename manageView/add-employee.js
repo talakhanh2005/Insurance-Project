@@ -5,7 +5,7 @@ const labelHopDong = document.getElementById("labelHopDong");
 // Hiện/ẩn hợp đồng khi chọn role
 roleSelect.addEventListener("change", function () {
     const selectedRole = this.value;
-    if (selectedRole === "accountant" || selectedRole === "supervisor") {
+    if (selectedRole === "Accountant" || selectedRole === "Supervisor") {
     labelHopDong.style.display = "block";
     } else {
     labelHopDong.style.display = "none";
@@ -37,23 +37,36 @@ document.getElementById("addEmployeeForm").addEventListener("submit", function (
     })
     .then(response => response.json())
     .then(data => {
-        if (data.success) {
-            showMessageBox("Đăng ký thành công!");
-            if(role === "Accountant"){
-                window.location.href = "accountant_employee.html";
-            }
-            else if(selectedRole === "Supervisor"){
-                window.location.href = "supervisor_employee.html";
-            }
-            else{
-                window.location.href = "sale_employee.html";
-            }
-        } else {
-            showMessageBox("Đăng ký thất bại: " + data.message);
+        console.log("Đăng ký thành công!");
+        if(role === "Accountant"){
+            window.location.href = "accountant_employee.html";
         }
+        else if(role === "Supervisor"){
+            window.location.href = "supervisor_employee.html";
+        }
+        else{
+            window.location.href = "sale_employee.html";
+        }
+        
     })
     .catch(error => {
         console.error("Lỗi khi gọi API:", error);
-        showMessageBox("Có lỗi xảy ra!");
+        console.log("Có lỗi xảy ra!");
     });
+
+    if (role === "Accountant" || role === "Supervisor") {
+        fetch("http://127.0.0.1:5000/assign-role", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        credentials: "include",
+        body: JSON.stringify({ 
+            username: username, 
+            password: pass,
+            full_name: fullName,
+            role: role
+        })
+    })
+    }
 });
