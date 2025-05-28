@@ -1,18 +1,35 @@
 window.addEventListener("DOMContentLoaded", () => {
     const tbody = document.querySelector("#contactTable tbody");
 
-    // Lấy danh sách hợp đồng từ localStorage nếu có
-    const stored = localStorage.getItem("updatedContactList");
-    const contactList = stored ? JSON.parse(stored) : Contact;
+    fetch("http://127.0.0.1:5000/insurance-types", {
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        credentials: "include"
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error("Không thể lấy danh sách loại bảo hiểm");
+        }
+        return response.json();
+    })
+    .then(data => {
+        // Kiểm tra nếu có lỗi từ backend
+        if (data.error) {
+            alert(data.error);
+            return;
+        }
 
-    contactList.forEach(hd => {
+        // Dữ liệu hợp lệ
+        data.forEach(users => {
         const row = document.createElement("tr");
         row.innerHTML = `
-            <td>${hd.maHD}</td>
-            <td>${hd["Bảo hiểm nhân thọ"]}</td>
-            <td>${hd.nguoiThuHuong}</td>
-            <td>${hd.ngayKiKet}</td>
-            <td>${hd.ngayKetThuc}</td>
+            <td>${users.id ?? "rong"}</td>
+            <td>"rong"</td>
+            <td>${users.name ?? "rong"}</td>
+            <td>"rong"</td>
+            <td>"rong"</td>
             <td>
                 <button class="btn btn-edit">Sửa</button>
                 <button class="btn btn-delete">Xoá</button>
@@ -20,7 +37,12 @@ window.addEventListener("DOMContentLoaded", () => {
         `;
         tbody.appendChild(row);
     });
-    localStorage.removeItem("updatedContactList");
+    })
+    .catch(err => {
+        console.error(err);
+        alert("Đã xảy ra lỗi khi tải loại bảo hiểm");
+    });
+    
     // Gắn sự kiện sửa
     const table = document.getElementById('contactTable');
     table.addEventListener('click', function (e) {
@@ -34,4 +56,5 @@ window.addEventListener("DOMContentLoaded", () => {
             window.location.href = 'edit-contact.html';
         }
     });
+
 });

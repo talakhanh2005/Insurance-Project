@@ -53,49 +53,10 @@
 
   <!-- Hiển thị bảng log -->
   <script>
-    function getLogs() {
-      return JSON.parse(localStorage.getItem("logData")) || Log;
-    }
-
-    function saveLogs(logs) {
-      localStorage.setItem("logData", JSON.stringify(logs));
-    }
-
-    function deleteLog(logID) {
-      const confirmDelete = confirm("Bạn có chắc chắn muốn xoá Log này không?");
-      if (!confirmDelete) return;
-
-      const logs = getLogs();
-      const updatedLogs = logs.filter(log => log.LogID !== logID);
-      saveLogs(updatedLogs);
-      renderLogTable();
-    }
-    function renderLogTable() {
-      const tbody = document.querySelector("#logTable tbody");
-      tbody.innerHTML = "";
-
-      const logs = JSON.parse(localStorage.getItem("logData")) || Log;
-
-      logs.forEach(log => {
-        const tr = document.createElement("tr");
-        tr.innerHTML = `
-          <td>${log.LogID}</td>
-          <td>${log.UserType}</td>
-          <td>${log.ActionType}</td>
-          <td>${log.ChangeByUserID}</td>
-          <td>${log.Detail}</td>
-          <td>${log.ChangeDate}</td>
-          <td><button class="btn btn-danger" onclick="deleteLog('${log.LogID}')">Xoá</button></td>
-        `;
-        tbody.appendChild(tr);
-      });
-    }
-
     function redirectToPage() {
       window.location.href = '../adminView.html';
     }
 
-    document.addEventListener("DOMContentLoaded", renderLogTable);
   </script>
 </body>
 </html>
