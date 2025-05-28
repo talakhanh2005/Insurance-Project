@@ -22,7 +22,46 @@ window.addEventListener("DOMContentLoaded", () => {
             }
         });
     }
+
+
     
+    fetch("http://127.0.0.1:5000/insurance-contracts/type", {
+        method: "GET",
+        credentials: "include"
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.error) {
+            return;
+        }
+
+        const tbody = document.querySelector("#contractsTable tbody");
+        tbody.innerHTML = ""; 
+
+        data.forEach(contract => {
+            const row = document.createElement("tr");
+
+            row.innerHTML = `
+                <td>${contract.contract_id}</td>
+                <td>${contract.insurance_type_id}</td>
+                <td>${contract.insured_person_id}</td>
+                <td>${new Date(contract.premium_amount).toLocaleDateString()}</td>
+                <td><button onclick="viewContract('${contract.contract_id}')">Xem</button></td>
+            `;
+
+            tbody.appendChild(row);
+        });
+    })
+    .catch(error => {
+        console.error("Lỗi kết nối:", error);
+    });
+
+
+
+
+
+
+
     renderContactList(selectElement.value);
 
     selectElement.addEventListener('change', function() {
