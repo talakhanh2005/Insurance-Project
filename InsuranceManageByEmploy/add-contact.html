@@ -51,52 +51,7 @@
     </form>
   </div>
 
-  <script>
-  const roleSelect = document.getElementById("role");
-  const labelHopDong = document.getElementById("labelHopDong");
-
-  // Hiện/ẩn hợp đồng khi chọn role
-  roleSelect.addEventListener("change", function () {
-    const selectedRole = this.value;
-    if (selectedRole === "accountant" || selectedRole === "supervisor") {
-      labelHopDong.style.display = "block";
-    } else {
-      labelHopDong.style.display = "none";
-    }
-  });
-
-  document.addEventListener("DOMContentLoaded", function () {
-    // Tạo mã nhân viên tự động
-    const manv = "NV" + Date.now();
-    document.getElementById("manv").value = manv;
-
-    // Xử lý khi submit form
-    document.getElementById("addEmployeeForm").addEventListener("submit", function (e) {
-      e.preventDefault();
-
-      const selectedRole = document.getElementById("role").value;
-      const hopDong = (selectedRole === "accountant" || selectedRole === "supervisor")
-        ? document.getElementById("hd").value
-        : null;
-
-      const nhanVien = {
-        manv: document.getElementById("manv").value,
-        tennv: document.getElementById("tennv").value,
-        date: document.getElementById("date").value,
-        role: selectedRole,
-        hopDong: hopDong
-      };
-
-      // Lưu vào localStorage
-      let dsNhanVien = JSON.parse(localStorage.getItem("dsNhanVien")) || [];
-      dsNhanVien.push(nhanVien);
-      localStorage.setItem("dsNhanVien", JSON.stringify(dsNhanVien));
-
-      alert("Đã lưu thông tin nhân viên!");
-      window.location.href = "employee.html";
-    });
-  });
-</script>
+  <script src="add-contact.js"></script>
 
 </body>
 </html>
